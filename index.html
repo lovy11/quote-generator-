@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Generator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            transition: background-image 1s ease-in-out;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .mood-section {
+            margin: 100px 0;
+        }
+
+        .heading h1 {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            text-align: center;
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+        .mood-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 20px;
+        }
+
+        .mood-option {
+            background: transparent;
+            border-radius: 4px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.356);
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .mood-option:hover {
+            transform: scale(1.05);
+            background-color: #2d2d2e2f;
+        }
+
+        .emoji {
+            font-size: 2.6rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .mood {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .mood-option p {
+            font-size: 14px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
+        /* quote-content */
+        .quote-box {
+            display: none;
+            margin-top: 40px;
+            text-align: center;
+            /* background: rgba(255, 255, 255, 0.9); */
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .quote-emoji {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        #quoteText {
+            font-size: 20px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #newQuoteBtn,
+        #resetBtn {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: inline-block;
+        }
+
+        #newQuoteBtn:hover,
+        #resetBtn:hover {
+            background-color: #388e3c;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="Quote-conatiner">
+        <div class="container">
+            <div class="heading">
+                <h1>How are you feeling today !</h1>
+            </div>
+
+            <div class="mood-section" id="mood-section">
+                <div class="mood-grid">
+                    <div class="mood-option" data-mood="Sad">
+                        <span class="emoji">😔</span>
+                        <span class="mood">Sad</span>
+                        <p>Feeling low, emotionally down</p>
+                    </div>
+                    <div class="mood-option" data-mood="Confused">
+                        <span class="emoji">😕</span>
+                        <span class="mood">Confused</span>
+                        <p>Unclear about life, decisions, or future</p>
+                    </div>
+                    <div class="mood-option" data-mood="Love">
+                        <span class="emoji">💔</span>
+                        <span class="mood">Heartbroken/ In love</span>
+                        <p>feeling emotional due to love, breakup, or attachment</p>
+                    </div>
+                    <div class="mood-option" data-mood="Depressed">
+                        <span class="emoji">😞</span>
+                        <span class="mood">Depressed</span>
+                        <p>feeling very low, hopeless, or mentally tired</p>
+                    </div>
+                    <div class="mood-option" data-mood="Angry">
+                        <span class="emoji">😡</span>
+                        <span class="mood">Angry</span>
+                        <p>frustrated, irritated, or had a bad day</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- quote dispaly box -->
+        <div class="quote-box" id="quote-box">
+            <div class="quote-content">
+                <span class="emoji" id="quoteEmoji"></span>
+                <p class="quote-text" id="quoteText"></p>
+                <div class="new-qoute-btn" id="newQuoteBtn">New Quote 🌸</div>
+                <div class="reset-qoute-btn" id="resetBtn">Feel Better ❤️</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        //for backgound change
+        const backgrounds = [
+            "#f0f4f8",
+            "#fde2e4",
+            "#d0f4de",
+            "#fff1e6",
+            "#e0f7fa",
+            "#f3e5f5",
+            "#fef9c3",
+            "linear-gradient(to right, #e0c3fc, #8ec5fc)",
+            "linear-gradient(to right, #ffecd2, #fcb69f)",
+            "linear-gradient(to right, #f6d365, #fda085)"
+        ];
+
+        const randombg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+        document.body.style.background = randombg;
+
+        //for show quote box
+        const quote = {
+            Sad: [
+                { text: "Even the darkest night will end and the sun rise.", emoji: "🌅" },
+                { text: "it's okay to feel sad. this too shall pass.", emoji: "💙" }
+            ],
+            Confused: [
+                { text: "Clarity comes after confusion. trust the process", emoji: "🔍" },
+                { text: "Even stars need darkness to shine", emoji: "🌌" }
+            ],
+            Love: [
+                { text: "Love is never wrong. it teaches, even in pain.", emoji: "💙" },
+                { text: "You loved deeply. that's beautiful.", emoji: "🌸" }
+            ],
+            Depressed: [
+                { text: "Your story isn't over yet, you're not alone", emoji: "🕊️" },
+                { text: "Every storms run out of rain.", emoji: "☔" }
+            ],
+            Angry: [
+                { text: "take breath. you deserve peace, not pain.", emoji: "🌿" },
+                { text: "let's go off what you can't control.", emoji: "🍃" }
+            ],
+        };
+
+        let currentMood = null
+        document.querySelectorAll(".mood-option").forEach(item => {
+            item.addEventListener('click', function () {
+                currentMood = this.dataset.mood;
+                showQuote(currentMood);
+            })
+        });
+
+        // Show quote logic
+        function showQuote(mood) {
+            const quoteBox = document.getElementById("quote-box");
+            const quoteText = document.getElementById("quoteText");
+            const quoteEmoji = document.getElementById("quoteEmoji");
+            const moodSection = document.getElementById("mood-section")
+
+            const moodQuote = quote[mood];
+            const random = moodQuote[Math.floor(Math.random() * moodQuote.length)];
+
+            quoteText.textContent = random.text;
+            quoteEmoji.textContent = random.emoji;
+            quoteBox.style.display = "block";
+            moodSection.style.display = "none";
+        };
+
+        // New quote button
+        document.getElementById("newQuoteBtn").addEventListener("click", function () {
+            if (currentMood) {
+                showQuote(currentMood);
+            }
+        });
+
+        // Reset button
+        document.getElementById("resetBtn").addEventListener("click", function () {
+            document.getElementById("quote-box").style.display = "none";
+            currentMood = null;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+
+</html>
